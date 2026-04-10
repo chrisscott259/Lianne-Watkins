@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout>
+  <main class="min-h-screen px-6 pb-20 pt-[calc(76px+5rem)] sm:px-12 sm:pb-32 sm:pt-[calc(76px+8rem)]">
+    <section class="mx-auto w-full max-w-[52rem] rounded-[1rem] border border-forest/8 bg-white/80 p-6 shadow-[0_2px_12px_rgba(45,106,79,0.05)] backdrop-blur-sm sm:p-12">
+      <p class="mb-4 inline-flex items-center gap-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-forest before:h-[1.5px] before:w-7 before:rounded-full before:bg-forest before:content-['']">
+        Astro Migration
+      </p>
+      <h1 class="mb-4 text-[clamp(2.4rem,6vw,4rem)] leading-none tracking-[-0.04em]">
+        Navbar and footer components are now in Astro.
+      </h1>
+      <p class="max-w-[42rem] text-[1.02rem] leading-[1.8] text-[#625c57]">
+        This project is scaffolded as an Astro app, and the homepage navigation and footer have been extracted
+        into reusable components. The rest of the page migration can build on top of this structure next.
+      </p>
+    </section>
+  </main>
+</BaseLayout>

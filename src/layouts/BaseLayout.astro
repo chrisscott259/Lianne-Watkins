@@ -1,0 +1,33 @@
+---
+import Footer from "../components/Footer.astro";
+import Navbar from "../components/Navbar.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Lianne Watkins | EMDR Therapist | Online Therapy California",
+  description = "Trauma-informed, EMDR-based therapy for adults across California."
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body
+    class="m-0 min-h-screen overflow-x-hidden bg-[linear-gradient(160deg,var(--color-cream)_0%,var(--color-linen)_40%,#f3ebe0_100%)] font-body text-[1.0625rem] leading-[1.7] text-charcoal antialiased data-[menu-open=true]:overflow-hidden"
+    data-menu-open="false"
+  >
+    <Navbar currentPath={Astro.url.pathname} />
+    <slot />
+    <Footer currentPath={Astro.url.pathname} />
+  </body>
+</html>

@@ -1,0 +1,69 @@
+---
+import { footerQuickLinks, footerSpecialties } from "../data/site";
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+function normalizePath(path: string) {
+  if (!path) return "/";
+
+  const normalized = path.replace(/\/+$/, "");
+  return normalized === "" ? "/" : normalized;
+}
+
+function isCurrentPath(href: string) {
+  return normalizePath(currentPath) === normalizePath(href);
+}
+
+const containerClass = "mx-auto w-full max-w-[1200px] px-6 sm:px-12";
+const footerLinkClass =
+  "block py-[5px] text-[0.9rem] transition-colors duration-300 ease-out hover:text-cream aria-[current=page]:text-cream";
+---
+
+<footer class="bg-navy pb-12 pt-20 text-cream/70">
+  <div class={containerClass}>
+    <div class="grid gap-8 md:grid-cols-2 md:gap-10 lg:grid-cols-[1.2fr_0.8fr_1fr] lg:gap-14">
+      <div>
+        <div class="mb-5 font-heading text-[1.2rem] text-cream">Lianne Watkins</div>
+        <p class="mb-2 text-[0.9rem] leading-[1.7]">
+          Trauma-informed, EMDR-based therapy for adults across California. Finally, forward.
+        </p>
+        <p class="mt-3 text-[0.9rem] leading-[1.7]">Currently accepting new clients.</p>
+      </div>
+
+      <div>
+        <div class="mb-5 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-cream/40">Quick Links</div>
+        {footerQuickLinks.map((link) => (
+          <a href={link.href} class={footerLinkClass} aria-current={isCurrentPath(link.href) ? "page" : undefined}>
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <div>
+        <div class="mb-5 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-cream/40">Specialties</div>
+        {footerSpecialties.map((link) => (
+          <a href={link.href} class={footerLinkClass} aria-current={isCurrentPath(link.href) ? "page" : undefined}>
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="mt-14 border-t border-white/6 pt-8">
+      <p class="mb-3 text-[0.78rem] leading-[1.7] text-cream/40">
+        Lianne Watkins, MA | Registered Associate Marriage and Family Therapist (AMFT #143409) | Registered
+        Associate Professional Clinical Counselor (APCC — number pending) | Employed by Kindred Heart Therapy
+        Group | Supervised by Lovie Bucknell, Licensed Marriage and Family Therapist (LMFT #104497)
+      </p>
+      <p class="mb-3 text-[0.78rem] leading-[1.7] text-cream/40">
+        Currently accepting clients located in California only. This website is for informational purposes only
+        and does not constitute a therapeutic relationship. If you are in crisis, please call or text 988
+        (Suicide & Crisis Lifeline) or text HOME to 741741 (Crisis Text Line). If you are in immediate danger,
+        call 911.
+      </p>
+      <p class="text-[0.78rem] leading-[1.7] text-cream/40">
+        © 2026 Lianne Watkins. All rights reserved. | HIPAA Notice of Privacy Practices | Privacy Policy
+      </p>
+    </div>
+  </div>
+</footer>

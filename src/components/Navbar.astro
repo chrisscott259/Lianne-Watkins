@@ -1,0 +1,205 @@
+---
+import {
+  locationsGroup,
+  mobileNavLinks,
+  primaryNavLinks,
+  specialtiesGroup
+} from "../data/site";
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+
+function normalizePath(path: string) {
+  if (!path) return "/";
+
+  const normalized = path.replace(/\/+$/, "");
+  return normalized === "" ? "/" : normalized;
+}
+
+function isCurrentPath(href: string) {
+  return normalizePath(currentPath) === normalizePath(href);
+}
+
+function isGroupActive(href: string, items: { href: string }[]) {
+  return isCurrentPath(href) || items.some((item) => isCurrentPath(item.href));
+}
+
+const shellClass = "mx-auto flex w-full max-w-[1200px] items-center justify-between px-6 sm:px-12";
+const navLinkClass =
+  "rounded-full px-3.5 py-2 text-[0.82rem] font-medium tracking-[0.02em] transition-[background-color,color] duration-300 ease-out hover:bg-forest/7 hover:text-forest aria-[current=page]:text-forest";
+const dropdownTriggerClass =
+  "flex cursor-default items-center gap-1 rounded-full px-3.5 py-2 text-[0.82rem] font-medium tracking-[0.02em] transition-[background-color,color] duration-300 ease-out hover:bg-forest/7 hover:text-forest aria-[current=page]:bg-forest/7 aria-[current=page]:text-forest";
+const dropdownItemClass =
+  "block whitespace-nowrap rounded-lg px-3.5 py-[9px] text-[0.82rem] transition-[background-color,color] duration-300 ease-out hover:bg-mint hover:text-forest aria-[current=page]:font-medium aria-[current=page]:text-forest";
+const bookCallClass =
+  "relative ml-2.5 overflow-hidden rounded-full bg-forest px-6 py-2.5 text-[0.8rem] font-semibold tracking-[0.02em] text-white transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-px hover:bg-[#245a42] hover:shadow-[0_6px_24px_rgba(45,106,79,0.3)] after:pointer-events-none after:absolute after:left-1/2 after:top-1/2 after:h-0 after:w-0 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-white/15 after:content-[''] after:transition-[width,height] after:duration-[550ms] after:ease-out hover:after:h-[420px] hover:after:w-[420px]";
+const hamburgerLineClass =
+  "block h-[1.5px] w-[22px] origin-center rounded-full bg-charcoal transition-all duration-300 ease-out";
+---
+
+<nav
+  class="fixed inset-x-0 top-0 z-[1000] flex h-[76px] items-center transition-[background-color,box-shadow,backdrop-filter] duration-[400ms] ease-out data-[scrolled=true]:bg-cream/92 data-[scrolled=true]:shadow-[0_1px_16px_rgba(0,0,0,0.06)] data-[scrolled=true]:backdrop-blur-[16px]"
+  role="navigation"
+  data-site-nav
+  data-scrolled="false"
+>
+  <div class={shellClass}>
+    <a
+      href="/"
+      class="inline-flex items-center whitespace-nowrap font-heading text-[1.3rem] text-charcoal transition-colors duration-300 ease-out hover:text-forest"
+      aria-current={isCurrentPath("/") ? "page" : undefined}
+    >
+      Lianne Watkins
+      <span class="ml-1.5 align-middle font-body text-[0.65rem] font-medium uppercase tracking-[0.06em] opacity-50">
+        AMFT, APCC
+      </span>
+    </a>
+
+    <div class="hidden items-center gap-1.5 lg:flex">
+      {primaryNavLinks.slice(0, 2).map((link) => (
+        <a href={link.href} class={navLinkClass} aria-current={isCurrentPath(link.href) ? "page" : undefined}>
+          {link.label}
+        </a>
+      ))}
+
+      <div class="group relative">
+        <a
+          href={specialtiesGroup.href}
+          class={dropdownTriggerClass}
+          aria-current={isGroupActive(specialtiesGroup.href, specialtiesGroup.items) ? "page" : undefined}
+        >
+          {specialtiesGroup.label}
+          <span class="mt-px inline-block text-[0.65em] transition-transform duration-300 ease-out group-hover:rotate-180">
+            ▾
+          </span>
+        </a>
+        <div class="invisible absolute left-1/2 top-[calc(100%+8px)] z-[100] grid min-w-[380px] -translate-x-1/2 translate-y-1.5 grid-cols-2 gap-0.5 rounded-[1rem] border border-forest/8 bg-white p-3 opacity-0 shadow-[0_12px_40px_rgba(45,106,79,0.1)] transition-[opacity,transform,visibility] duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+          {specialtiesGroup.items.map((item) => (
+            <a
+              href={item.href}
+              class:list={[
+                dropdownItemClass,
+                item.href === specialtiesGroup.href && "font-medium text-forest"
+              ]}
+              aria-current={isCurrentPath(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div class="group relative">
+        <a
+          href={locationsGroup.href}
+          class={dropdownTriggerClass}
+          aria-current={isGroupActive(locationsGroup.href, locationsGroup.items) ? "page" : undefined}
+        >
+          {locationsGroup.label}
+          <span class="mt-px inline-block text-[0.65em] transition-transform duration-300 ease-out group-hover:rotate-180">
+            ▾
+          </span>
+        </a>
+        <div class="invisible absolute left-1/2 top-[calc(100%+8px)] z-[100] grid min-w-[380px] -translate-x-1/2 translate-y-1.5 grid-cols-2 gap-0.5 rounded-[1rem] border border-forest/8 bg-white p-3 opacity-0 shadow-[0_12px_40px_rgba(45,106,79,0.1)] transition-[opacity,transform,visibility] duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+          {locationsGroup.items.map((item) => (
+            <a href={item.href} class={dropdownItemClass} aria-current={isCurrentPath(item.href) ? "page" : undefined}>
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {primaryNavLinks.slice(2).map((link) => (
+        <a href={link.href} class={navLinkClass} aria-current={isCurrentPath(link.href) ? "page" : undefined}>
+          {link.label}
+        </a>
+      ))}
+
+      <a href="/book" class={bookCallClass}>Book Free Call</a>
+    </div>
+
+    <button
+      class="group relative z-[1100] flex h-8 w-8 flex-col justify-center gap-[5px] border-0 bg-transparent p-0 lg:hidden"
+      type="button"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      data-nav-toggle
+      data-open="false"
+    >
+      <span class:list={[hamburgerLineClass, "group-data-[open=true]:translate-y-[6.5px] group-data-[open=true]:rotate-45"]}></span>
+      <span class:list={[hamburgerLineClass, "group-data-[open=true]:scale-x-0 group-data-[open=true]:opacity-0"]}></span>
+      <span
+        class:list={[hamburgerLineClass, "group-data-[open=true]:-translate-y-[6.5px] group-data-[open=true]:-rotate-45"]}
+      ></span>
+    </button>
+  </div>
+</nav>
+
+<div
+  class="invisible fixed inset-0 z-[1050] block overflow-y-auto bg-cream px-6 pb-9 pt-[calc(76px+32px)] opacity-0 transition-[opacity,visibility] duration-300 ease-out data-[open=true]:visible data-[open=true]:opacity-100 sm:px-9 lg:hidden"
+  data-mobile-menu
+  data-open="false"
+>
+  {mobileNavLinks.map((link) => (
+    <a
+      href={link.href}
+      class="block border-b border-charcoal/8 py-3 font-heading text-[1.6rem] transition-colors duration-300 ease-out hover:text-forest aria-[current=page]:text-forest sm:text-[2rem]"
+      aria-current={isCurrentPath(link.href) ? "page" : undefined}
+    >
+      {link.label}
+    </a>
+  ))}
+  <a
+    href="/book"
+    class="mt-8 inline-block rounded-full bg-forest px-9 py-4 text-[0.9rem] font-semibold tracking-[0.02em] text-white transition-colors duration-300 ease-out hover:bg-[#245a42]"
+  >
+    Book Free Call
+  </a>
+</div>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const nav = document.querySelector("[data-site-nav]");
+    const toggle = document.querySelector("[data-nav-toggle]");
+    const mobileMenu = document.querySelector("[data-mobile-menu]");
+
+    if (!(nav instanceof HTMLElement)) return;
+
+    const syncNav = () => {
+      nav.dataset.scrolled = window.scrollY > 40 ? "true" : "false";
+    };
+
+    syncNav();
+    window.addEventListener("scroll", syncNav, { passive: true });
+
+    if (!(toggle instanceof HTMLButtonElement) || !(mobileMenu instanceof HTMLElement)) return;
+
+    const setMenuState = (open) => {
+      toggle.dataset.open = open ? "true" : "false";
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      mobileMenu.dataset.open = open ? "true" : "false";
+      document.body.dataset.menuOpen = open ? "true" : "false";
+    };
+
+    setMenuState(false);
+
+    toggle.addEventListener("click", () => {
+      setMenuState(mobileMenu.dataset.open !== "true");
+    });
+
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => setMenuState(false));
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setMenuState(false);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 1024) {
+        setMenuState(false);
+      }
+    });
+  });
+</script>
