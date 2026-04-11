@@ -21,6 +21,12 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
   </head>
   <body
     class="m-0 min-h-screen overflow-x-hidden bg-[linear-gradient(160deg,var(--color-cream)_0%,var(--color-linen)_40%,#f3ebe0_100%)] font-body text-[1.0625rem] leading-[1.7] text-charcoal antialiased data-[menu-open=true]:overflow-hidden"
@@ -31,3 +37,60 @@ const {
     <Footer currentPath={Astro.url.pathname} />
   </body>
 </html>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const progressBar = document.querySelector("[data-page-progress]");
+    const scrollIndicator = document.querySelector("[data-scroll-indicator]");
+    const revealTargets = Array.from(document.querySelectorAll("[data-reveal]"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const syncProgress = () => {
+      if (!(progressBar instanceof HTMLElement)) return;
+
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+      progressBar.style.width = `${progress}%`;
+    };
+
+    const syncIndicator = () => {
+      if (!(scrollIndicator instanceof HTMLElement)) return;
+      scrollIndicator.dataset.hidden = window.scrollY > 120 ? "true" : "false";
+    };
+
+    if (reduceMotion) {
+      revealTargets.forEach((element) => {
+        if (element instanceof HTMLElement) {
+          element.dataset.visible = "true";
+        }
+      });
+    } else if (revealTargets.length > 0) {
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!(entry.target instanceof HTMLElement)) return;
+            if (!entry.isIntersecting) return;
+
+            entry.target.dataset.visible = "true";
+            revealObserver.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.14, rootMargin: "0px 0px -10% 0px" }
+      );
+
+      revealTargets.forEach((element) => revealObserver.observe(element));
+    }
+
+    syncProgress();
+    syncIndicator();
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        syncProgress();
+        syncIndicator();
+      },
+      { passive: true }
+    );
+  });
+</script>

@@ -1,0 +1,59 @@
+---
+import type { DarkInfoBandSectionDefinition } from "../../data/content-types";
+
+interface Props {
+  section: DarkInfoBandSectionDefinition;
+}
+
+const { section } = Astro.props;
+
+const labelClass =
+  "inline-flex items-center gap-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-cream before:h-[1.5px] before:w-7 before:rounded-full before:bg-cream before:content-['']";
+const toneClass =
+  section.tone === "navy"
+    ? "bg-[linear-gradient(160deg,#181827_0%,#20213a_100%)]"
+    : "bg-[linear-gradient(160deg,var(--color-forest-dark)_0%,var(--color-forest)_100%)]";
+const ctaClass =
+  "relative inline-flex items-center justify-center overflow-hidden rounded-full bg-cream px-7 py-4 text-center text-[0.8rem] font-semibold uppercase tracking-[0.08em] text-charcoal transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_10px_32px_rgba(0,0,0,0.16)]";
+---
+
+<section class:list={[toneClass, "py-18 text-cream sm:py-24 lg:py-30"]}>
+  <div class="mx-auto w-full max-w-[760px] px-6 sm:px-12">
+    <div
+      data-reveal
+      data-visible="false"
+      class="opacity-0 translate-y-7 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+    >
+      {section.eyebrow && <p class={labelClass}>{section.eyebrow}</p>}
+      <h2 class="mt-5 max-w-[16ch] text-[clamp(2.15rem,4.1vw,3.15rem)] leading-[1.03] tracking-[-0.04em] text-white">
+        {section.title}
+      </h2>
+      {section.lead && <p class="mt-6 text-[1.05rem] leading-[1.82] text-white/78">{section.lead}</p>}
+    </div>
+
+    {section.paragraphs && (
+      <div class="mt-6 space-y-5">
+        {section.paragraphs.map((paragraph, index) => (
+          <p
+            data-reveal
+            data-visible="false"
+            class="opacity-0 translate-y-7 text-[0.98rem] leading-[1.82] text-white/72 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+            style={`transition-delay:${Math.min(index * 60, 240)}ms`}
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
+    )}
+
+    {section.cta && (
+      <div
+        data-reveal
+        data-visible="false"
+        class="mt-9 opacity-0 translate-y-7 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+      >
+        <a href={section.cta.href} class={ctaClass}>{section.cta.label}</a>
+      </div>
+    )}
+  </div>
+</section>

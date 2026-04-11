@@ -1,0 +1,61 @@
+---
+import type { TextWithFactsSectionDefinition, Tone } from "../../data/content-types";
+
+interface Props {
+  section: TextWithFactsSectionDefinition;
+}
+
+const { section } = Astro.props;
+
+const labelClass =
+  "inline-flex items-center gap-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-forest before:h-[1.5px] before:w-7 before:rounded-full before:bg-forest before:content-['']";
+const backgroundMap: Record<Tone, string> = {
+  cream: "bg-cream",
+  mint: "bg-mint",
+  linen: "bg-linen"
+};
+const backgroundClass = backgroundMap[section.background ?? "cream"];
+const factsCardClass =
+  section.factsTone === "plain"
+    ? "rounded-[1.15rem] border border-forest/8 bg-white px-7 py-8"
+    : "rounded-[1.15rem] border border-forest/8 bg-linen px-7 py-8";
+---
+
+<section class:list={[backgroundClass, "py-18 sm:py-24 lg:py-30"]}>
+  <div class="mx-auto grid w-full max-w-[1200px] gap-10 px-6 sm:px-12 lg:grid-cols-[1fr_0.9fr] lg:gap-14">
+    <div
+      data-reveal
+      data-visible="false"
+      class="opacity-0 -translate-x-8 transition duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-x-0 data-[visible=true]:opacity-100"
+    >
+      {section.eyebrow && <p class={labelClass}>{section.eyebrow}</p>}
+      <h2 class="mt-5 max-w-[15ch] text-[clamp(2.15rem,4.4vw,3.25rem)] leading-[1.03] tracking-[-0.04em] text-charcoal">
+        {section.title}
+      </h2>
+      {section.lead && <p class="mt-6 text-[1.08rem] leading-[1.82] text-[#5a5550]">{section.lead}</p>}
+      <div class="mt-5 space-y-5">
+        {section.paragraphs.map((paragraph) => (
+          <p class="text-[0.98rem] leading-[1.82] text-[#6a6460]">{paragraph}</p>
+        ))}
+      </div>
+    </div>
+
+    <aside
+      data-reveal
+      data-visible="false"
+      class:list={[factsCardClass, "opacity-0 translate-x-8 transition duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-x-0 data-[visible=true]:opacity-100"]}
+    >
+      {section.factsEyebrow && <p class={labelClass}>{section.factsEyebrow}</p>}
+      <ul class="mt-6 space-y-3.5">
+        {section.facts.map((fact) => (
+          <li class="flex items-start gap-3 text-[0.98rem] leading-[1.7] text-charcoal/88">
+            <span class="mt-[0.35rem] inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-forest/10 text-[0.72rem] font-bold text-forest">
+              &#10003;
+            </span>
+            <span>{fact}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  </div>
+</section>

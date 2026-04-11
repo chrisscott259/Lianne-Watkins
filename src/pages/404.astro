@@ -1,0 +1,21 @@
+---
+import UtilityLayout from "../layouts/UtilityLayout.astro";
+---
+
+<UtilityLayout title="Page Not Found" description="The page you are looking for doesn't exist or has moved.">
+  <main class="flex min-h-screen items-center justify-center px-6 py-12">
+    <div class="w-full max-w-[34rem] rounded-[1.5rem] border border-forest/10 bg-white/80 p-8 text-center shadow-[0_12px_40px_rgba(45,106,79,0.08)] backdrop-blur-sm sm:p-12">
+      <p class="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-forest/60">404</p>
+      <h1 class="mt-5 text-[clamp(2.4rem,5vw,3.5rem)] leading-[1] tracking-[-0.05em] text-charcoal">Page Not Found</h1>
+      <p class="mt-5 text-[1rem] leading-[1.8] text-[#625c57]">
+        The page you are looking for doesn't exist or has been moved.
+      </p>
+      <a
+        href="/"
+        class="mt-8 inline-flex items-center justify-center rounded-full bg-forest px-7 py-4 text-[0.8rem] font-semibold uppercase tracking-[0.08em] text-white transition-[background-color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#245a42]"
+      >
+        Go Home
+      </a>
+    </div>
+  </main>
+</UtilityLayout>

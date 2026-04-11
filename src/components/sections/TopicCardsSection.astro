@@ -1,0 +1,69 @@
+---
+import type { CardGridSectionDefinition, Tone } from "../../data/content-types";
+
+interface Props {
+  section: CardGridSectionDefinition;
+}
+
+const { section } = Astro.props;
+
+const labelClass =
+  "inline-flex items-center gap-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-forest before:h-[1.5px] before:w-7 before:rounded-full before:bg-forest before:content-['']";
+const backgroundMap: Record<Tone, string> = {
+  cream: "bg-cream",
+  mint: "bg-mint",
+  linen: "bg-linen"
+};
+const backgroundClass = backgroundMap[section.background ?? "cream"];
+const gridClass =
+  section.columns === 1
+    ? "grid-cols-1"
+    : section.columns === 2
+      ? "grid-cols-1 lg:grid-cols-2"
+      : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3";
+const ctaClass =
+  "relative inline-flex items-center justify-center overflow-hidden rounded-full bg-forest px-7 py-4 text-center text-[0.8rem] font-semibold uppercase tracking-[0.08em] text-white transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#245a42] hover:shadow-[0_10px_32px_rgba(45,106,79,0.28)]";
+---
+
+<section class:list={[backgroundClass, "py-18 sm:py-24 lg:py-30"]}>
+  <div class="mx-auto w-full max-w-[1200px] px-6 sm:px-12">
+    {(section.eyebrow || section.title || section.lead) && (
+      <div data-reveal data-visible="false" class="max-w-[760px] opacity-0 translate-y-7 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100">
+        {section.eyebrow && <p class={labelClass}>{section.eyebrow}</p>}
+        {section.title && (
+          <h2 class="mt-5 max-w-[15ch] text-[clamp(2.25rem,4.6vw,3.5rem)] leading-[1.02] tracking-[-0.04em] text-charcoal">
+            {section.title}
+          </h2>
+        )}
+        {section.lead && <p class="mt-6 text-[1.08rem] leading-[1.82] text-[#5a5550]">{section.lead}</p>}
+      </div>
+    )}
+
+    <div class:list={["mt-12 grid gap-5", gridClass]}>
+      {section.cards.map((card, index) => (
+        <article
+          data-reveal
+          data-visible="false"
+          class="group relative overflow-hidden rounded-[1.15rem] bg-white px-7 pb-8 pt-10 opacity-0 translate-y-7 shadow-[0_2px_12px_rgba(45,106,79,0.05)] transition-[transform,box-shadow,opacity] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(45,106,79,0.09)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+          style={`transition-delay:${index * 80}ms`}
+        >
+          <span class="absolute left-7 top-0 h-[3px] w-10 rounded-b-sm bg-forest/65 transition-[width,opacity] duration-300 group-hover:w-14 group-hover:opacity-100"></span>
+          <span class="pointer-events-none absolute inset-y-0 left-[-100%] w-1/2 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent)] transition-transform duration-700 group-hover:translate-x-[320%]"></span>
+          {card.eyebrow && (
+            <p class="inline-flex items-center gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-forest before:h-px before:w-6 before:rounded-full before:bg-forest before:content-['']">
+              {card.eyebrow}
+            </p>
+          )}
+          <h3 class="text-[1.7rem] leading-[1.1] tracking-[-0.03em] text-charcoal">{card.title}</h3>
+          <p class="mt-4 text-[0.98rem] leading-[1.8] text-[#6a6460]">{card.body}</p>
+        </article>
+      ))}
+    </div>
+
+    {section.cta && (
+      <div data-reveal data-visible="false" class="mt-12 opacity-0 translate-y-7 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100">
+        <a href={section.cta.href} class={ctaClass}>{section.cta.label}</a>
+      </div>
+    )}
+  </div>
+</section>

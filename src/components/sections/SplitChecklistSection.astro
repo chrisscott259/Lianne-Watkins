@@ -1,0 +1,68 @@
+---
+import type { SplitAsideSectionDefinition, Tone } from "../../data/content-types";
+
+interface Props {
+  section: SplitAsideSectionDefinition;
+}
+
+const { section } = Astro.props;
+
+const labelClass =
+  "inline-flex items-center gap-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-forest before:h-[1.5px] before:w-7 before:rounded-full before:bg-forest before:content-['']";
+const backgroundMap: Record<Tone, string> = {
+  cream: "bg-cream",
+  mint: "bg-mint",
+  linen: "bg-linen"
+};
+const backgroundClass = backgroundMap[section.background ?? "cream"];
+const primaryButtonClass =
+  "relative inline-flex items-center justify-center overflow-hidden rounded-full bg-forest px-7 py-4 text-center text-[0.8rem] font-semibold uppercase tracking-[0.08em] text-white transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#245a42] hover:shadow-[0_10px_32px_rgba(45,106,79,0.28)]";
+---
+
+<section class:list={[backgroundClass, "py-18 sm:py-24 lg:py-30"]}>
+  <div class="mx-auto grid w-full max-w-[1200px] gap-10 px-6 sm:px-12 lg:grid-cols-[1fr_0.92fr] lg:gap-14">
+    <div data-reveal data-visible="false" class="opacity-0 -translate-x-8 transition duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-x-0 data-[visible=true]:opacity-100">
+      {section.eyebrow && <p class={labelClass}>{section.eyebrow}</p>}
+      <h2 class="mt-5 max-w-[14ch] text-[clamp(2.2rem,4.4vw,3.45rem)] leading-[1.02] tracking-[-0.04em] text-charcoal">
+        {section.title}
+      </h2>
+      {section.lead && <p class="mt-6 max-w-[38rem] text-[1.08rem] leading-[1.82] text-[#5a5550]">{section.lead}</p>}
+      <div class="mt-5 space-y-5">
+        {section.paragraphs.map((paragraph) => (
+          <p class="max-w-[38rem] text-[0.98rem] leading-[1.8] text-[#6a6460]">{paragraph}</p>
+        ))}
+      </div>
+      {section.quote && (
+        <blockquote class="mt-8 max-w-[38rem] border-l-[3px] border-forest/18 pl-5 font-heading text-[1.4rem] leading-[1.35] tracking-[-0.02em] text-charcoal/86">
+          {section.quote}
+        </blockquote>
+      )}
+      {section.cta && (
+        <a href={section.cta.href} class:list={[primaryButtonClass, "mt-9"]}>{section.cta.label}</a>
+      )}
+    </div>
+
+    <aside data-reveal data-visible="false" class="rounded-[1.2rem] border border-forest/8 bg-linen px-7 py-9 opacity-0 translate-x-8 transition duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-x-0 data-[visible=true]:opacity-100 sm:px-10 sm:py-11">
+      {section.aside.eyebrow && <p class={labelClass}>{section.aside.eyebrow}</p>}
+      {section.aside.title && (
+        <h3 class="mt-5 text-[1.6rem] leading-[1.08] tracking-[-0.03em] text-charcoal">{section.aside.title}</h3>
+      )}
+      <ul class="mt-7 space-y-3.5">
+        {section.aside.items.map((item, index) => (
+          <li class="flex items-start gap-3 text-[0.98rem] leading-[1.65] text-charcoal/88" style={`transition-delay:${index * 90}ms`}>
+            <span class:list={[
+              "mt-[0.35rem] inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[0.72rem] font-bold",
+              section.aside.mode === "facts" ? "bg-terracotta/10 text-terracotta" : "bg-forest/10 text-forest"
+            ]}>
+              {section.aside.mode === "facts" ? "•" : "✓"}
+            </span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      {section.aside.cta && (
+        <a href={section.aside.cta.href} class:list={[primaryButtonClass, "mt-8"]}>{section.aside.cta.label}</a>
+      )}
+    </aside>
+  </div>
+</section>

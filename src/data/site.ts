@@ -11,8 +11,8 @@ export type NavGroup = {
 
 export const primaryNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/emdr-therapy", label: "EMDR" },
   { href: "/about", label: "About" },
+  { href: "/emdr-therapy", label: "EMDR" },
   { href: "/fees-insurance", label: "Fees" },
   { href: "/faq", label: "FAQ" }
 ];
@@ -61,10 +61,10 @@ export const locationsGroup: NavGroup = {
 
 export const mobileNavLinks: NavLink[] = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
   { href: "/emdr-therapy", label: "EMDR" },
   { href: "/specialties", label: "Specialties" },
   { href: "/online-therapy-california", label: "Locations" },
-  { href: "/about", label: "About" },
   { href: "/fees-insurance", label: "Fees" },
   { href: "/faq", label: "FAQ" }
 ];

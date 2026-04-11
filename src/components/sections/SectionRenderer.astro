@@ -1,0 +1,32 @@
+---
+import type { SectionDefinition } from "../../data/content-types";
+import ClosingCtaSection from "./ClosingCtaSection.astro";
+import DarkInfoBandSection from "./DarkInfoBandSection.astro";
+import EmbedPlaceholderSection from "./EmbedPlaceholderSection.astro";
+import FeatureGridSection from "./FeatureGridSection.astro";
+import LinkGridSection from "./LinkGridSection.astro";
+import ProcessStepsSection from "./ProcessStepsSection.astro";
+import QuestionListSection from "./QuestionListSection.astro";
+import RichTextSection from "./RichTextSection.astro";
+import SplitChecklistSection from "./SplitChecklistSection.astro";
+import TextWithFactsSection from "./TextWithFactsSection.astro";
+import TopicCardsSection from "./TopicCardsSection.astro";
+
+interface Props {
+  section: SectionDefinition;
+}
+
+const { section } = Astro.props;
+---
+
+{section.type === "richText" && <RichTextSection section={section} />}
+{section.type === "cardGrid" && <TopicCardsSection section={section} />}
+{section.type === "splitAside" && <SplitChecklistSection section={section} />}
+{section.type === "linkGrid" && <LinkGridSection section={section} />}
+{section.type === "featureGrid" && <FeatureGridSection section={section} />}
+{section.type === "processSteps" && <ProcessStepsSection section={section} />}
+{section.type === "darkBand" && <DarkInfoBandSection section={section} />}
+{section.type === "questionList" && <QuestionListSection section={section} />}
+{section.type === "textWithFacts" && <TextWithFactsSection section={section} />}
+{section.type === "embedPlaceholder" && <EmbedPlaceholderSection section={section} />}
+{section.type === "ctaBand" && <ClosingCtaSection section={section} />}

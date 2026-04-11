@@ -1,0 +1,45 @@
+---
+import type { FeatureGridSectionDefinition, Tone } from "../../data/content-types";
+
+interface Props {
+  section: FeatureGridSectionDefinition;
+}
+
+const { section } = Astro.props;
+
+const labelClass =
+  "inline-flex items-center gap-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-forest before:h-[1.5px] before:w-7 before:rounded-full before:bg-forest before:content-['']";
+const backgroundMap: Record<Tone, string> = {
+  cream: "bg-cream",
+  mint: "bg-mint",
+  linen: "bg-linen"
+};
+const backgroundClass = backgroundMap[section.background ?? "mint"];
+---
+
+<section class:list={[backgroundClass, "py-18 sm:py-24 lg:py-30"]}>
+  <div class="mx-auto w-full max-w-[1200px] px-6 sm:px-12">
+    <div data-reveal data-visible="false" class="max-w-[760px] opacity-0 translate-y-7 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100">
+      {section.eyebrow && <p class={labelClass}>{section.eyebrow}</p>}
+      <h2 class="mt-5 max-w-[14ch] text-[clamp(2.2rem,4.4vw,3.35rem)] leading-[1.02] tracking-[-0.04em] text-charcoal">
+        {section.title}
+      </h2>
+      {section.lead && <p class="mt-6 text-[1.08rem] leading-[1.82] text-[#5a5550]">{section.lead}</p>}
+    </div>
+
+    <div class="mt-12 grid gap-x-14 gap-y-12 lg:grid-cols-2">
+      {section.items.map((item, index) => (
+        <article
+          data-reveal
+          data-visible="false"
+          class="opacity-0 translate-y-7 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+          style={`transition-delay:${index * 70}ms`}
+        >
+          <span class="mb-5 block h-[2px] w-8 rounded-full bg-sage"></span>
+          <h3 class="text-[1.7rem] leading-[1.1] tracking-[-0.03em] text-charcoal">{item.title}</h3>
+          <p class="mt-3 text-[0.98rem] leading-[1.8] text-[#6a6460]">{item.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+---
+import type { CtaBandSectionDefinition } from "../../data/content-types";
+
+interface Props {
+  section: CtaBandSectionDefinition;
+}
+
+const { section } = Astro.props;
+
+const labelClass =
+  "inline-flex items-center gap-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-cream before:h-[1.5px] before:w-7 before:rounded-full before:bg-cream before:content-['']";
+const creamButtonClass =
+  "relative inline-flex items-center justify-center overflow-hidden rounded-full bg-cream px-8 py-[1.15rem] text-center text-[0.84rem] font-semibold uppercase tracking-[0.08em] text-charcoal transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_10px_32px_rgba(0,0,0,0.16)]";
+const primaryToneClass =
+  section.variant === "cream-on-dark"
+    ? "bg-[linear-gradient(160deg,#181827_0%,#20213a_100%)]"
+    : "bg-[linear-gradient(160deg,var(--color-forest-dark)_0%,var(--color-forest)_50%,var(--color-forest-dark)_100%)]";
+---
+
+<section class:list={["relative isolate overflow-hidden py-20 text-center sm:py-24 lg:py-30", primaryToneClass]}>
+  <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(82,183,136,0.12),transparent_65%)]"></div>
+  <div class="pointer-events-none absolute -right-24 -top-48 h-[37.5rem] w-[37.5rem] rounded-full border border-white/6"></div>
+  <div class="pointer-events-none absolute inset-0 overflow-hidden">
+    <span class="absolute left-[8%] top-[78%] h-3 w-3 animate-[particleFloat_12s_linear_infinite] rounded-full bg-white/8"></span>
+    <span class="absolute left-[24%] top-[92%] h-2 w-2 animate-[particleFloat_16s_linear_infinite] rounded-full bg-white/8 [animation-delay:1.2s]"></span>
+    <span class="absolute left-[58%] top-[88%] h-4 w-4 animate-[particleFloat_14s_linear_infinite] rounded-full bg-white/7 [animation-delay:0.8s]"></span>
+    <span class="absolute left-[82%] top-[84%] h-2.5 w-2.5 animate-[particleFloat_18s_linear_infinite] rounded-full bg-white/8 [animation-delay:2s]"></span>
+  </div>
+
+  <div
+    data-reveal
+    data-visible="false"
+    class="relative z-10 mx-auto w-full max-w-[1200px] px-6 opacity-0 scale-[0.96] transition duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:scale-100 data-[visible=true]:opacity-100 sm:px-12"
+  >
+    {section.eyebrow && <p class={labelClass}>{section.eyebrow}</p>}
+    <h2 class="mx-auto mt-5 max-w-[12ch] text-[clamp(2.2rem,4vw,3.15rem)] leading-[1.03] tracking-[-0.04em] text-white">
+      {section.title}
+    </h2>
+    <p class="mx-auto mt-6 max-w-[35rem] text-[1.03rem] leading-[1.85] text-white/78">{section.lead}</p>
+    <a href={section.cta.href} class:list={[creamButtonClass, "mt-10"]}>{section.cta.label}</a>
+  </div>
+</section>

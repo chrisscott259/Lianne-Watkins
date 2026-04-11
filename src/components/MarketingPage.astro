@@ -1,0 +1,26 @@
+---
+import type { PageContent } from "../data/content-types";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroSection from "./sections/HeroSection.astro";
+import SectionRenderer from "./sections/SectionRenderer.astro";
+
+interface Props {
+  page: PageContent;
+}
+
+const { page } = Astro.props;
+---
+
+<BaseLayout title={page.title} description={page.description}>
+  {page.showProgressBar && (
+    <div
+      data-page-progress
+      class="pointer-events-none fixed left-0 top-0 z-[1200] h-[3px] w-0 rounded-r-sm bg-[linear-gradient(90deg,var(--color-forest),var(--color-sage),var(--color-terracotta))]"
+    ></div>
+  )}
+
+  <main>
+    <HeroSection hero={page.hero} />
+    {page.sections.map((section) => <SectionRenderer section={section} />)}
+  </main>
+</BaseLayout>

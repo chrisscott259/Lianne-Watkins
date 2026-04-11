@@ -1,0 +1,16 @@
+---
+import MarketingPage from "../components/MarketingPage.astro";
+import { locationPages } from "../data/location-pages";
+import { specialtyPages } from "../data/specialty-pages";
+
+export function getStaticPaths() {
+  return [...specialtyPages, ...locationPages].map((page) => ({
+    params: { slug: page.slug },
+    props: { page }
+  }));
+}
+
+const { page } = Astro.props;
+---
+
+<MarketingPage page={page} />

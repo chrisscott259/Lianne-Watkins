@@ -1,0 +1,153 @@
+---
+import type { ButtonVariant, HeroContent } from "../../data/content-types";
+
+interface Props {
+  hero: HeroContent;
+}
+
+const { hero } = Astro.props;
+
+const labelClass =
+  "inline-flex items-center gap-3.5 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-forest before:h-[1.5px] before:w-7 before:rounded-full before:bg-forest before:content-['']";
+
+function ctaClass(variant: ButtonVariant = "primary") {
+  if (variant === "secondary") {
+    return "relative inline-flex items-center justify-center overflow-hidden rounded-full border border-forest px-7 py-4 text-center text-[0.8rem] font-semibold uppercase tracking-[0.08em] text-forest transition-[background-color,color,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-forest hover:text-white";
+  }
+
+  if (variant === "cream") {
+    return "relative inline-flex items-center justify-center overflow-hidden rounded-full bg-cream px-7 py-4 text-center text-[0.8rem] font-semibold uppercase tracking-[0.08em] text-charcoal transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_10px_32px_rgba(0,0,0,0.16)]";
+  }
+
+  return "relative inline-flex items-center justify-center overflow-hidden rounded-full bg-forest px-7 py-4 text-center text-[0.8rem] font-semibold uppercase tracking-[0.08em] text-white transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#245a42] hover:shadow-[0_10px_32px_rgba(45,106,79,0.28)]";
+}
+---
+
+{hero.variant === "home" ? (
+  <section class="relative isolate overflow-hidden bg-[linear-gradient(160deg,var(--color-cream)_0%,var(--color-linen)_40%,#f3ebe0_100%)]">
+    <div class="pointer-events-none absolute inset-0">
+      <div class="absolute -right-28 top-[-11rem] h-[44rem] w-[44rem] rounded-full border border-forest/6"></div>
+      <div class="absolute -left-24 bottom-[-5rem] h-[25rem] w-[25rem] rounded-full border border-terracotta/10"></div>
+      <div class="absolute left-[4%] top-[18%] hidden h-[12.5rem] w-[12.5rem] rounded-full border border-forest/5 lg:block"></div>
+      <div class="absolute bottom-[12%] right-[6%] hidden h-[8.75rem] w-[8.75rem] rounded-full border border-terracotta/8 lg:block"></div>
+      <div class="absolute right-[28%] top-[45%] hidden h-20 w-20 rounded-full border border-sage/10 xl:block"></div>
+    </div>
+
+    <div class="mx-auto grid w-full max-w-[1200px] gap-12 px-6 pb-24 pt-[calc(76px+2rem)] sm:px-12 sm:pb-28 sm:pt-[calc(76px+3rem)] lg:min-h-[calc(100svh-76px)] lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-18 lg:pb-20">
+      <div class="relative z-10">
+        {hero.eyebrow && (
+          <div
+            data-reveal
+            data-visible="false"
+            class="opacity-0 translate-y-7 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+          >
+            <p class={labelClass}>{hero.eyebrow}</p>
+          </div>
+        )}
+
+        <div
+          data-reveal
+          data-visible="false"
+          class="mt-6 opacity-0 translate-y-7 transition duration-700 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+        >
+          <h1 class="max-w-[12ch] text-[clamp(2.8rem,6vw,4.5rem)] leading-[0.98] tracking-[-0.05em] text-charcoal">
+            {hero.title}
+          </h1>
+        </div>
+
+        <div
+          data-reveal
+          data-visible="false"
+          class="mt-7 opacity-0 translate-y-7 transition duration-700 delay-200 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+        >
+          <p class="max-w-[34rem] text-[1.04rem] leading-[1.9] text-[#6a6460]">{hero.lead}</p>
+        </div>
+
+        {hero.ctas && hero.ctas.length > 0 && (
+          <div
+            data-reveal
+            data-visible="false"
+            class="mt-10 flex flex-col gap-4 opacity-0 translate-y-7 transition duration-700 delay-300 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 sm:flex-row sm:flex-wrap"
+          >
+            {hero.ctas.map((cta) => (
+              <a href={cta.href} class={ctaClass(cta.variant)}>{cta.label}</a>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {hero.image && (
+        <div
+          data-reveal
+          data-visible="false"
+          class="relative z-10 mx-auto w-full max-w-[21rem] opacity-0 translate-y-7 transition duration-800 delay-150 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 sm:max-w-[24rem] lg:max-w-none"
+        >
+          <div class="absolute inset-[-1.4rem] rounded-[13rem_13rem_1.25rem_1.25rem] border border-forest/8 animate-[breatheRing_5s_ease-in-out_infinite] sm:inset-[-1.6rem]"></div>
+          <img
+            src={hero.image.src}
+            srcset={hero.image.srcset}
+            sizes={hero.image.sizes}
+            alt={hero.image.alt}
+            class="relative w-full rounded-[12rem_12rem_1rem_1rem] object-cover object-top shadow-[0_20px_60px_rgba(45,106,79,0.14)] transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.03] sm:rounded-[12.5rem_12.5rem_1rem_1rem] lg:max-h-[40rem]"
+            loading="eager"
+          />
+        </div>
+      )}
+    </div>
+
+    {hero.showScrollIndicator && (
+      <div
+        data-scroll-indicator
+        data-hidden="false"
+        class="pointer-events-none absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 opacity-100 transition-opacity duration-500 data-[hidden=true]:opacity-0 sm:flex"
+      >
+        <span class="text-[0.58rem] font-semibold uppercase tracking-[0.24em] text-forest/45">Scroll</span>
+        <span class="relative h-9 w-px overflow-hidden rounded-full bg-forest/15 after:absolute after:left-0 after:top-[-100%] after:h-full after:w-full after:animate-[scrollLine_2.4s_ease-in-out_infinite] after:bg-forest/55 after:content-['']"></span>
+      </div>
+    )}
+  </section>
+) : (
+  <section class="bg-[linear-gradient(160deg,var(--color-cream)_0%,var(--color-linen)_55%,#f3ebe0_100%)] pb-18 pt-[calc(76px+4rem)] sm:pb-24 sm:pt-[calc(76px+5rem)] lg:pb-28 lg:pt-[calc(76px+6rem)]">
+    <div class:list={[
+      "mx-auto w-full max-w-[880px] px-6 sm:px-12",
+      hero.align === "left" ? "text-left" : "text-center"
+    ]}>
+      <div
+        data-reveal
+        data-visible="false"
+        class="opacity-0 translate-y-7 transition duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100"
+      >
+        {hero.eyebrow && (
+          <p class:list={[labelClass, hero.align === "center" && "justify-center before:self-center"]}>{hero.eyebrow}</p>
+        )}
+        <h1 class:list={[
+          "mt-5 text-[clamp(2.45rem,5vw,4.15rem)] leading-[1] tracking-[-0.05em] text-charcoal",
+          hero.align === "center" ? "mx-auto max-w-[13ch]" : "max-w-[12ch]"
+        ]}>
+          {hero.title}
+        </h1>
+        <p class:list={[
+          "mt-6 text-[1.08rem] leading-[1.9] text-[#625c57]",
+          hero.align === "center" ? "mx-auto max-w-[38rem]" : "max-w-[38rem]"
+        ]}>
+          {hero.lead}
+        </p>
+      </div>
+
+      {hero.ctas && hero.ctas.length > 0 && (
+        <div
+          data-reveal
+          data-visible="false"
+          class:list={[
+            "mt-10 flex flex-col gap-4 opacity-0 translate-y-7 transition duration-700 delay-100 ease-[cubic-bezier(0.22,1,0.36,1)] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 sm:flex-row sm:flex-wrap",
+            hero.align === "center" && "justify-center"
+          ]}
+        >
+          {hero.ctas.map((cta) => (
+            <a href={cta.href} class={ctaClass(cta.variant)}>{cta.label}</a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+)}
