@@ -27,9 +27,13 @@ const shellClass = "mx-auto flex w-full max-w-[1200px] items-center justify-betw
 const navLinkClass =
   "rounded-full px-3.5 py-2 text-[0.82rem] font-medium tracking-[0.02em] transition-[background-color,color] duration-300 ease-out hover:bg-forest/7 hover:text-forest aria-[current=page]:text-forest";
 const dropdownTriggerClass =
-  "flex cursor-default items-center gap-1 rounded-full px-3.5 py-2 text-[0.82rem] font-medium tracking-[0.02em] transition-[background-color,color] duration-300 ease-out hover:bg-forest/7 hover:text-forest aria-[current=page]:bg-forest/7 aria-[current=page]:text-forest";
+  "flex items-center gap-1 rounded-full px-3.5 py-2 text-[0.82rem] font-medium tracking-[0.02em] transition-[background-color,color] duration-300 ease-out hover:bg-forest/7 hover:text-forest focus-visible:bg-forest/7 focus-visible:text-forest focus-visible:outline-none aria-[current=page]:bg-forest/7 aria-[current=page]:text-forest group-hover:bg-forest/7 group-hover:text-forest group-focus-within:bg-forest/7 group-focus-within:text-forest";
 const dropdownItemClass =
-  "block whitespace-nowrap rounded-lg px-3.5 py-[9px] text-[0.82rem] transition-[background-color,color] duration-300 ease-out hover:bg-mint hover:text-forest aria-[current=page]:font-medium aria-[current=page]:text-forest";
+  "block whitespace-nowrap rounded-lg px-3.5 py-[9px] text-[0.82rem] transition-[background-color,color] duration-300 ease-out hover:bg-mint hover:text-forest focus-visible:bg-mint focus-visible:text-forest focus-visible:outline-none aria-[current=page]:bg-mint/60 aria-[current=page]:font-medium aria-[current=page]:text-forest";
+const dropdownPanelClass =
+  "invisible absolute left-1/2 top-full z-[100] -translate-x-1/2 translate-y-1.5 pt-2 opacity-0 transition-[opacity,transform,visibility] duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100";
+const dropdownPanelInnerClass =
+  "rounded-[1rem] border border-forest/8 bg-white p-3 shadow-[0_12px_40px_rgba(45,106,79,0.1)]";
 const bookCallClass =
   "relative ml-2.5 overflow-hidden rounded-full bg-forest px-6 py-2.5 text-[0.8rem] font-semibold tracking-[0.02em] text-white transition-[background-color,box-shadow,transform] duration-300 ease-out hover:-translate-y-px hover:bg-[#245a42] hover:shadow-[0_6px_24px_rgba(45,106,79,0.3)] after:pointer-events-none after:absolute after:left-1/2 after:top-1/2 after:h-0 after:w-0 after:-translate-x-1/2 after:-translate-y-1/2 after:rounded-full after:bg-white/15 after:content-[''] after:transition-[width,height] after:duration-[550ms] after:ease-out hover:after:h-[420px] hover:after:w-[420px]";
 const hamburgerLineClass =
@@ -66,25 +70,39 @@ const hamburgerLineClass =
           href={specialtiesGroup.href}
           class={dropdownTriggerClass}
           aria-current={isGroupActive(specialtiesGroup.href, specialtiesGroup.items) ? "page" : undefined}
+          aria-haspopup="true"
         >
           {specialtiesGroup.label}
-          <span class="mt-px inline-block text-[0.65em] transition-transform duration-300 ease-out group-hover:rotate-180">
+          <span class="mt-px inline-block text-[0.65em] transition-transform duration-300 ease-out group-hover:rotate-180 group-focus-within:rotate-180">
             ▾
           </span>
         </a>
-        <div class="invisible absolute left-1/2 top-[calc(100%+8px)] z-[100] grid min-w-[380px] -translate-x-1/2 translate-y-1.5 grid-cols-2 gap-0.5 rounded-[1rem] border border-forest/8 bg-white p-3 opacity-0 shadow-[0_12px_40px_rgba(45,106,79,0.1)] transition-[opacity,transform,visibility] duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-          {specialtiesGroup.items.map((item) => (
+        <div class={dropdownPanelClass} role="menu">
+          <div class={`w-[640px] ${dropdownPanelInnerClass}`}>
+            <div class="grid grid-cols-3 gap-x-2 gap-y-0.5">
+              {specialtiesGroup.items
+                .filter((item) => item.href !== specialtiesGroup.href)
+                .map((item) => (
+                  <a
+                    href={item.href}
+                    class={dropdownItemClass}
+                    aria-current={isCurrentPath(item.href) ? "page" : undefined}
+                    role="menuitem"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+            </div>
             <a
-              href={item.href}
-              class:list={[
-                dropdownItemClass,
-                item.href === specialtiesGroup.href && "font-medium text-forest"
-              ]}
-              aria-current={isCurrentPath(item.href) ? "page" : undefined}
+              href={specialtiesGroup.href}
+              class="mt-2 flex items-center justify-between rounded-lg border-t border-forest/8 px-3.5 pt-3 text-[0.8rem] font-medium text-forest transition-colors duration-300 ease-out hover:text-[#245a42] focus-visible:text-[#245a42] focus-visible:outline-none"
+              aria-current={isCurrentPath(specialtiesGroup.href) ? "page" : undefined}
+              role="menuitem"
             >
-              {item.label}
+              View all specialties
+              <span aria-hidden="true">→</span>
             </a>
-          ))}
+          </div>
         </div>
       </div>
 
@@ -93,18 +111,26 @@ const hamburgerLineClass =
           href={locationsGroup.href}
           class={dropdownTriggerClass}
           aria-current={isGroupActive(locationsGroup.href, locationsGroup.items) ? "page" : undefined}
+          aria-haspopup="true"
         >
           {locationsGroup.label}
-          <span class="mt-px inline-block text-[0.65em] transition-transform duration-300 ease-out group-hover:rotate-180">
+          <span class="mt-px inline-block text-[0.65em] transition-transform duration-300 ease-out group-hover:rotate-180 group-focus-within:rotate-180">
             ▾
           </span>
         </a>
-        <div class="invisible absolute left-1/2 top-[calc(100%+8px)] z-[100] grid min-w-[380px] -translate-x-1/2 translate-y-1.5 grid-cols-2 gap-0.5 rounded-[1rem] border border-forest/8 bg-white p-3 opacity-0 shadow-[0_12px_40px_rgba(45,106,79,0.1)] transition-[opacity,transform,visibility] duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-          {locationsGroup.items.map((item) => (
-            <a href={item.href} class={dropdownItemClass} aria-current={isCurrentPath(item.href) ? "page" : undefined}>
-              {item.label}
-            </a>
-          ))}
+        <div class={dropdownPanelClass} role="menu">
+          <div class={`grid w-[420px] grid-cols-2 gap-x-2 gap-y-0.5 ${dropdownPanelInnerClass}`}>
+            {locationsGroup.items.map((item) => (
+              <a
+                href={item.href}
+                class={dropdownItemClass}
+                aria-current={isCurrentPath(item.href) ? "page" : undefined}
+                role="menuitem"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
